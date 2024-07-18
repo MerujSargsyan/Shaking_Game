@@ -1,43 +1,33 @@
 #include <raylib.h>
+#include <stdio.h>
 // TODO: delta time
 
 int gravity = 1;
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 1000;
 
-typedef struct Velocity {
-    int x;
-    int y;
-} Velocity;
-
-typedef struct Accel {
-    int x;
-    int y;
-} Accel;
-
 typedef struct Circle {
-    int x;
-    int y;
+    Vector2 pos;
+    Vector2 vel;
+    Vector2 accl;
     float r;
-    Velocity vel;
     Color col;
-    Accel accl;
 } Circle;
 
 void update_shapes(Circle* c) {
-    c->x += c->vel.x;
-    c->y += c->vel.y;
-    if(c->y >= WINDOW_HEIGHT) {
+    c->pos.x += c->vel.x;
+    c->pos.y += c->vel.y;
+    if(c->pos.y >= WINDOW_HEIGHT) {
         c->vel.y = -10; // bounce factor
         c->accl.y = -1;
-    } else if(c->y <= 0) {
+    } else if(c->pos.y <= 0) {
         c->vel.y = 10; // bounce factor
         c->accl.y = 1;
     }
-    if(c->x >= WINDOW_WIDTH) {
+    if(c->pos.x >= WINDOW_WIDTH) {
         c->vel.x = -10; // bounce factor
         c->accl.x = -1;
-    } else if(c->x <= 0) {
+    } else if(c->pos.x <= 0) {
         c->vel.x = 10; // bounce factor
         c->accl.x = 1;
     }
@@ -48,8 +38,8 @@ void update_shapes(Circle* c) {
 int main(void) {
     SetTargetFPS(60);
     Circle c;
-    c.x = 250;
-    c.y = 250;
+    c.pos.x = 250;
+    c.pos.y = 250;
     c.r = 50.0f;
     c.vel.x = 0;
     c.vel.y = 0;
@@ -58,8 +48,8 @@ int main(void) {
     c.col = BLACK;
 
     Circle c2;
-    c2.x = 0;
-    c2.y = WINDOW_HEIGHT/2;
+    c2.pos.x = 0;
+    c2.pos.y = WINDOW_HEIGHT/2;
     c2.r = 50.0f;
     c2.vel.x = 0;
     c2.vel.y = 0;
@@ -72,9 +62,12 @@ int main(void) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         update_shapes(&c);
-        DrawCircle(c.x, c.y, c.r, c.col);
         update_shapes(&c2);
-        DrawCircle(c2.x, c2.y, c2.r, c2.col);
+        if(CheckCollisionCircles(c.pos, c.r, c2.pos, c2.r)) {
+            printf("touching");
+        }
+        DrawCircle(c.pos.x, c.pos.y, c.r, c.col);
+        DrawCircle(c2.pos.x, c2.pos.y, c2.r, c2.col);
         EndDrawing();
     }
     CloseWindow();
