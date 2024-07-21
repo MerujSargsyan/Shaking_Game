@@ -23,12 +23,14 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
+include_directories(${raylib_SOURCE_DIR}/src)
+
 set(SOURCE_FILES src/main.c)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 #set(raylib_VERBOSE 1)
-target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(${PROJECT_NAME} raylib physics)
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
 if (APPLE)
