@@ -23,7 +23,10 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${raylib_SOURCE_DIR}/src)
+
+add_library(physics STATIC src/physics.c)
 
 set(SOURCE_FILES src/main.c)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

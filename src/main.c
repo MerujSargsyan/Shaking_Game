@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <raylib.h>
+#include <physics.h>
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 1000;
@@ -37,7 +37,7 @@ Circle get_circle(int mass, Vector2 pos, float rad, Vector2 vel, Vector2 acc, Co
 
 void simulate_physics(Circle* c1, Circle* c2) {
     Vector2 diff = Vector2Subtract(c1->vel, c2->vel);
-    printf("x: %f, y: %f\n", diff.x, diff.y);
+    print_vec(diff);
 }
 
 int main(void) {
